@@ -3,6 +3,8 @@ package matrix;
 import matrix.exception.BadMatrixException;
 import matrix.exception.OutOfBoundsMatrixException;
 
+import java.util.Arrays;
+
 public class RectangularMatrix implements Matrix {
 
     private final double[][] matrix;
@@ -31,9 +33,9 @@ public class RectangularMatrix implements Matrix {
     }
 
     public RectangularMatrix(int n, int m, double[][] matrix) throws BadMatrixException {
-        this.matrix = new double[n][m];
         if (matrix.length < n)
             throw new BadMatrixException(String.format("Matrix line count(%d) less then %d.", matrix.length, n));
+        this.matrix = new double[n][m];
         for (int i = 0; i < n; i++) {
             if (matrix[i].length < m)
                 throw new BadMatrixException((String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, m)));
@@ -74,5 +76,22 @@ public class RectangularMatrix implements Matrix {
     @Override
     public int getColumnCount() {
         return matrix[0].length;
+    }
+
+    @Override
+    public String toString() {
+        String output = "{\n";
+        try {
+            for (int i = 0; i < getLineCount(); i++) {
+                for (int j = 0; j < getColumnCount(); j++) {
+                    output += String.format("%15.10s", String.format("%.8f", get(i, j)));
+                }
+                output += "\n";
+            }
+        } catch (Exception ex) {
+
+        }
+        output += "}";
+        return output;
     }
 }
