@@ -2,7 +2,7 @@ package norms.vectorNorms;
 
 import vector.Vector;
 
-public class CubicMatrixNorm implements VectorNorm {
+public class CubicVectorNorm implements VectorNorm {
     @Override
     public double calculate(Vector vector) {
         double max = 0;
