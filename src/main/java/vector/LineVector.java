@@ -7,7 +7,7 @@ import vector.exception.BadVectorException;
 import vector.exception.OutOfBoundsVectorException;
 
 public class LineVector implements Vector {
-    private double[] vector;
+    private final double[] vector;
 
     public LineVector(double[] vector) {
         this.vector = new double[vector.length];

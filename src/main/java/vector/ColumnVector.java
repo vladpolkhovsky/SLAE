@@ -8,7 +8,7 @@ import vector.exception.ImmutableVectorException;
 import vector.exception.OutOfBoundsVectorException;
 
 public class ColumnVector implements Vector {
-    private double[] vector;
+    private final double[] vector;
 
     public ColumnVector(double[] vector) {
         this.vector = new double[vector.length];

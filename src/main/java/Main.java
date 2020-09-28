@@ -1,4 +1,5 @@
 import algo.Multiplicator;
+import algo.TransposeMatrix;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
 
@@ -18,5 +19,6 @@ public class Main {
         System.out.println(left);
         System.out.println(right);
         System.out.println(Multiplicator.multiply(left, right));
+        System.out.println(TransposeMatrix.transpose(left.getLineVector(0).getMatrixForm()));
     }
 }

@@ -2,8 +2,9 @@ package matrix;
 
 import matrix.exception.BadMatrixException;
 import matrix.exception.OutOfBoundsMatrixException;
-
-import java.util.Arrays;
+import vector.ColumnVector;
+import vector.LineVector;
+import vector.Vector;
 
 public class RectangularMatrix implements Matrix {
 
@@ -11,8 +12,8 @@ public class RectangularMatrix implements Matrix {
 
     public RectangularMatrix(double[][] matrix) throws BadMatrixException {
         int columnCount = matrix[0].length;
-        for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i].length != columnCount)
+        for (double[] doubles : matrix) {
+            if (doubles.length != columnCount)
                 throw new BadMatrixException("Different line sizes.");
         }
         this.matrix = new double[matrix.length][columnCount];
@@ -76,6 +77,22 @@ public class RectangularMatrix implements Matrix {
     @Override
     public int getColumnCount() {
         return matrix[0].length;
+    }
+
+    @Override
+    public Vector getLineVector(int i) throws OutOfBoundsMatrixException {
+        badIndexChecker(i, 0);
+        return new LineVector(matrix[i]);
+    }
+
+    @Override
+    public Vector getColumnVector(int j) throws OutOfBoundsMatrixException {
+        badIndexChecker(0, j);
+        double[] vector = new double[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            vector[i] = matrix[i][j];
+        }
+        return new ColumnVector(vector);
     }
 
     @Override

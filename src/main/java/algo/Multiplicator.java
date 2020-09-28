@@ -3,14 +3,13 @@ package algo;
 import algo.exception.DifferentMatrixSizes;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
-import matrix.SquareMatrix;
 import matrix.exception.ImmutableMatrixException;
 import matrix.exception.OutOfBoundsMatrixException;
 
 public class Multiplicator {
     public static Matrix multiply(Matrix a, Matrix b) throws DifferentMatrixSizes {
         if (a.getColumnCount() != b.getLineCount())
-            throw new DifferentMatrixSizes(String.format("left matrix line count != right matrix column count"));
+            throw new DifferentMatrixSizes("left matrix line count != right matrix column count");
         Matrix mulResult = new RectangularMatrix(a.getLineCount(), b.getColumnCount());
         try {
             for (int i = 0; i < a.getLineCount(); i++) {
@@ -22,7 +21,7 @@ public class Multiplicator {
                 }
             }
         } catch (OutOfBoundsMatrixException | ImmutableMatrixException ex) {
-
+            System.out.println(ex);
         }
         return mulResult;
     }

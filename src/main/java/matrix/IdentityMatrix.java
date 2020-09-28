@@ -3,6 +3,7 @@ package matrix;
 import matrix.exception.BadMatrixException;
 import matrix.exception.ImmutableMatrixException;
 import matrix.exception.OutOfBoundsMatrixException;
+import vector.Vector;
 
 public class IdentityMatrix implements Matrix {
     public static Matrix getMutableInstance(int n) {
@@ -55,6 +56,16 @@ public class IdentityMatrix implements Matrix {
     @Override
     public int getColumnCount() {
         return lineAndColumnCount;
+    }
+
+    @Override
+    public Vector getLineVector(int i) throws OutOfBoundsMatrixException {
+        return getMutableInstance(lineAndColumnCount).getLineVector(i);
+    }
+
+    @Override
+    public Vector getColumnVector(int j) throws OutOfBoundsMatrixException {
+        return getMutableInstance(lineAndColumnCount).getColumnVector(j);
     }
 
 }
