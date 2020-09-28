@@ -1,18 +1,22 @@
-import matrix.IdentityMatrix;
+import algo.Multiplicator;
 import matrix.Matrix;
-import matrix.SquareMatrix;
-import norms.matrixNorms.CubicMatrixNorm;
-import norms.vectorNorms.CubicVectorNorm;
-import norms.vectorNorms.OctahedralVectorNorm;
-import vector.ColumnVector;
-import vector.LineVector;
-import vector.Vector;
-
-import java.util.Random;
+import matrix.RectangularMatrix;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Vector vector = new ColumnVector(2);
-        System.out.println(vector.toColumnVector());
+        double a[][] = {
+                { 2, -3, 1 },
+                { 5, 4, -2 },
+        };
+        double b[][] = {
+                { -7, 5 },
+                { 2, -1 },
+                { 4, 3 }
+        };
+        Matrix left = new RectangularMatrix(a);
+        Matrix right = new RectangularMatrix(b);
+        System.out.println(left);
+        System.out.println(right);
+        System.out.println(Multiplicator.multiply(left, right));
     }
 }
