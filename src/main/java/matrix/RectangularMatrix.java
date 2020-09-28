@@ -48,9 +48,9 @@ public class RectangularMatrix implements Matrix {
     private void badIndexChecker(int i, int j) throws OutOfBoundsMatrixException {
         if (i < 0 || j < 0)
             throw new OutOfBoundsMatrixException("Negative indx.");
-        if (matrix.length < i)
+        if (matrix.length <= i)
             throw new OutOfBoundsMatrixException(String.format("Matrix line count(%d) less then %d.", matrix.length, i));
-        if (matrix[i].length < j)
+        if (matrix[i].length <= j)
             throw new OutOfBoundsMatrixException(String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, j));
     }
 

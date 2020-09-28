@@ -1,6 +1,8 @@
 package matrix.exception;
 
-public class BadMatrixException extends Exception {
+import exception.BadArgsException;
+
+public class BadMatrixException extends BadArgsException {
     public BadMatrixException(String message) {
         super(message);
     }

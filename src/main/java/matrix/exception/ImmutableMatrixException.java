@@ -1,6 +1,8 @@
 package matrix.exception;
 
-public class ImmutableMatrixException extends Exception {
+import exception.ImmutableException;
+
+public class ImmutableMatrixException extends ImmutableException {
     public ImmutableMatrixException(String message) {
         super(message);
     }

@@ -1,6 +1,8 @@
 package matrix.exception;
 
-public class OutOfBoundsMatrixException extends Exception {
+import exception.OutOfBoundsException;
+
+public class OutOfBoundsMatrixException extends OutOfBoundsException {
     public OutOfBoundsMatrixException(String message) {
         super(message);
     }

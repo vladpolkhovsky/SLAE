@@ -30,9 +30,9 @@ public class IdentityMatrix implements Matrix {
     private void badIndexChecker(int i, int j) throws OutOfBoundsMatrixException {
         if (i < 0 || j < 0)
             throw new OutOfBoundsMatrixException("Negative indx.");
-        if (lineAndColumnCount < i)
+        if (lineAndColumnCount <= i)
             throw new OutOfBoundsMatrixException(String.format("Matrix line count(%d) less then %d.", lineAndColumnCount, i));
-        if (lineAndColumnCount < j)
+        if (lineAndColumnCount <= j)
             throw new OutOfBoundsMatrixException(String.format("Matrix line %d length(%d) less then %d.", i, lineAndColumnCount, j));
     }
 
