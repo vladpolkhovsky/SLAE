@@ -17,6 +17,18 @@ public class ColumnVector implements Vector {
         }
     }
 
+    public ColumnVector(Vector vector) {
+        this.vector = new double[vector.getElementCount()];
+        try {
+            for (int i = 0; i < this.vector.length; i++) {
+                this.vector[i] = vector.get(i);
+            }
+
+        } catch (OutOfBoundsVectorException ex) {
+
+        }
+    }
+
     public ColumnVector(int n) {
         vector = new double[n];
     }

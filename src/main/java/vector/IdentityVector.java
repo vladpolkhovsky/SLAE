@@ -1,0 +1,83 @@
+package vector;
+
+import matrix.Matrix;
+import matrix.RectangularMatrix;
+import matrix.exception.BadMatrixException;
+import matrix.exception.OutOfBoundsMatrixException;
+import vector.exception.ImmutableVectorException;
+import vector.exception.OutOfBoundsVectorException;
+
+public class IdentityVector implements Vector {
+    public static Vector getMutableInstance(int n) {
+        double[] vector = new double[n];
+        for (int i = 0; i < n; i++) {
+            vector[i] = 1;
+        }
+        return new LineVector(vector);
+    }
+
+    private int elementCount;
+
+    private void indxChecker(int i) throws OutOfBoundsVectorException {
+        if (i < 0 || elementCount <= i) {
+            throw new OutOfBoundsVectorException(String.format("vector size(%d) less then %d", elementCount, i));
+        }
+    }
+
+    public IdentityVector(int n) {
+        elementCount = n;
+    }
+
+    @Override
+    public double get(int i) throws OutOfBoundsVectorException {
+        indxChecker(i);
+        return 1;
+    }
+
+    @Override
+    public double set(int i, double value) throws ImmutableVectorException {
+        throw new ImmutableVectorException("Identity vector is immutable. Use .getMutableInstance(int n)\"");
+    }
+
+    @Override
+    public int getElementCount() {
+        return elementCount;
+    }
+
+    @Override
+    public Matrix getMatrixForm() {
+        double[][] vector = new double[1][elementCount];
+        for (int i = 0; i < elementCount; i++) {
+            vector[0][i] = 1;
+        }
+        Matrix matrix = null;
+        try {
+            matrix = new RectangularMatrix(vector);
+        } catch (BadMatrixException ex) {
+
+        }
+        return matrix;
+    }
+
+    @Override
+    public Vector toLineVector() {
+        Vector vector = null;
+        try {
+            vector = new LineVector(getMatrixForm().getLineVector(0));
+        } catch (OutOfBoundsMatrixException ex) {
+
+        }
+        return vector;
+    }
+
+    @Override
+    public Vector toColumnVector() {
+        Vector vector = null;
+        try {
+            vector = new ColumnVector(getMatrixForm().getLineVector(0));
+        } catch (OutOfBoundsMatrixException ex) {
+
+        }
+        return vector;
+    }
+}

@@ -9,6 +9,17 @@ import vector.exception.OutOfBoundsVectorException;
 public class LineVector implements Vector {
     private final double[] vector;
 
+    public LineVector(Vector vector) {
+        this.vector = new double[vector.getElementCount()];
+        try {
+            for (int i = 0; i < this.vector.length; i++) {
+                this.vector[i] = vector.get(i);
+            }
+        } catch (OutOfBoundsVectorException ex) {
+
+        }
+    }
+
     public LineVector(double[] vector) {
         this.vector = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
