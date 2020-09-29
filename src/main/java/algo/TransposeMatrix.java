@@ -1,10 +1,8 @@
 package algo;
 
+import exception.ImmutableException;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
-import matrix.exception.BadMatrixException;
-import matrix.exception.ImmutableMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
 
 public class TransposeMatrix {
     public static Matrix transpose(Matrix matrix) {
@@ -16,7 +14,7 @@ public class TransposeMatrix {
                     transposed.set(j, i, matrix.get(i, j));
                 }
             }
-        } catch (OutOfBoundsMatrixException | ImmutableMatrixException ex) {
+        } catch (IndexOutOfBoundsException | ImmutableException ex) {
 
         }
         return  transposed;

@@ -1,14 +1,13 @@
 package matrix;
 
-import matrix.exception.ImmutableMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
+import exception.ImmutableException;
 import vector.Vector;
 
 public interface Matrix {
-    double get(int i, int j) throws OutOfBoundsMatrixException;
-    double set(int i, int j, double value) throws OutOfBoundsMatrixException, ImmutableMatrixException;
+    double get(int i, int j) throws IndexOutOfBoundsException;
+    double set(int i, int j, double value) throws IndexOutOfBoundsException, ImmutableException;
     int getLineCount();
     int getColumnCount();
-    Vector getLineVector(int i) throws OutOfBoundsMatrixException;
-    Vector getColumnVector(int j) throws OutOfBoundsMatrixException;
+    Vector getLineVector(int i) throws IndexOutOfBoundsException;
+    Vector getColumnVector(int j) throws IndexOutOfBoundsException;
 }

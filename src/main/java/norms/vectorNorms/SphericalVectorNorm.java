@@ -1,7 +1,6 @@
 package norms.vectorNorms;
 
 import vector.Vector;
-import vector.exception.OutOfBoundsVectorException;
 
 public class SphericalVectorNorm implements VectorNorm {
     @Override
@@ -12,7 +11,7 @@ public class SphericalVectorNorm implements VectorNorm {
                 double value = vector.get(i);
                 sum += value * value;
             }
-        } catch (OutOfBoundsVectorException outOfBoundsVectorException) {
+        } catch (IndexOutOfBoundsException outOfBoundsVectorException) {
 
         }
         return Math.sqrt(sum);

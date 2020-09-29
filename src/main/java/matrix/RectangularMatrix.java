@@ -1,7 +1,6 @@
 package matrix;
 
-import matrix.exception.BadMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
+import exception.BadArgsException;
 import vector.ColumnVector;
 import vector.LineVector;
 import vector.Vector;
@@ -10,11 +9,11 @@ public class RectangularMatrix implements Matrix {
 
     private final double[][] matrix;
 
-    public RectangularMatrix(double[][] matrix) throws BadMatrixException {
+    public RectangularMatrix(double[][] matrix) throws BadArgsException {
         int columnCount = matrix[0].length;
         for (double[] doubles : matrix) {
             if (doubles.length != columnCount)
-                throw new BadMatrixException("Different line sizes.");
+                throw new BadArgsException("Different line sizes.");
         }
         this.matrix = new double[matrix.length][columnCount];
         for (int i = 0; i < matrix.length; i++) {
@@ -33,36 +32,36 @@ public class RectangularMatrix implements Matrix {
         }
     }
 
-    public RectangularMatrix(int n, int m, double[][] matrix) throws BadMatrixException {
+    public RectangularMatrix(int n, int m, double[][] matrix) throws BadArgsException {
         if (matrix.length < n)
-            throw new BadMatrixException(String.format("Matrix line count(%d) less then %d.", matrix.length, n));
+            throw new BadArgsException(String.format("Matrix line count(%d) less then %d.", matrix.length, n));
         this.matrix = new double[n][m];
         for (int i = 0; i < n; i++) {
             if (matrix[i].length < m)
-                throw new BadMatrixException((String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, m)));
+                throw new BadArgsException((String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, m)));
             for (int j = 0; j < m; j++) {
                 this.matrix[i][j] = matrix[i][j];
             }
         }
     }
 
-    private void badIndexChecker(int i, int j) throws OutOfBoundsMatrixException {
+    private void badIndexChecker(int i, int j) throws IndexOutOfBoundsException {
         if (i < 0 || j < 0)
-            throw new OutOfBoundsMatrixException("Negative indx.");
+            throw new IndexOutOfBoundsException("Negative indx.");
         if (matrix.length <= i)
-            throw new OutOfBoundsMatrixException(String.format("Matrix line count(%d) less then %d.", matrix.length, i));
+            throw new IndexOutOfBoundsException(String.format("Matrix line count(%d) less then %d.", matrix.length, i));
         if (matrix[i].length <= j)
-            throw new OutOfBoundsMatrixException(String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, j));
+            throw new IndexOutOfBoundsException(String.format("Matrix line %d length(%d) less then %d.", i, matrix[i].length, j));
     }
 
     @Override
-    public double get(int i, int j) throws OutOfBoundsMatrixException {
+    public double get(int i, int j) throws IndexOutOfBoundsException {
         badIndexChecker(i, j);
         return matrix[i][j];
     }
 
     @Override
-    public double set(int i, int j, double value) throws OutOfBoundsMatrixException {
+    public double set(int i, int j, double value) throws IndexOutOfBoundsException {
         badIndexChecker(i, j);
         double pValue = matrix[i][j];
         matrix[i][j] = value;
@@ -80,13 +79,13 @@ public class RectangularMatrix implements Matrix {
     }
 
     @Override
-    public Vector getLineVector(int i) throws OutOfBoundsMatrixException {
+    public Vector getLineVector(int i) throws IndexOutOfBoundsException {
         badIndexChecker(i, 0);
         return new LineVector(matrix[i]);
     }
 
     @Override
-    public Vector getColumnVector(int j) throws OutOfBoundsMatrixException {
+    public Vector getColumnVector(int j) throws IndexOutOfBoundsException {
         badIndexChecker(0, j);
         double[] vector = new double[matrix.length];
         for (int i = 0; i < matrix.length; i++) {

@@ -1,10 +1,9 @@
 package algo;
 
 import algo.exception.DifferentMatrixSizes;
+import exception.ImmutableException;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
-import matrix.exception.ImmutableMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
 
 public class Multiplicator {
     public static Matrix multiply(Matrix a, Matrix b) throws DifferentMatrixSizes {
@@ -20,7 +19,7 @@ public class Multiplicator {
                     }
                 }
             }
-        } catch (OutOfBoundsMatrixException | ImmutableMatrixException ex) {
+        } catch (IndexOutOfBoundsException | ImmutableException ex) {
             System.out.println(ex);
         }
         return mulResult;

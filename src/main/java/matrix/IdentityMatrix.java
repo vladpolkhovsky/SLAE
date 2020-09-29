@@ -1,8 +1,7 @@
 package matrix;
 
-import matrix.exception.BadMatrixException;
-import matrix.exception.ImmutableMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
+import exception.BadArgsException;
+import exception.ImmutableException;
 import vector.Vector;
 
 public class IdentityMatrix implements Matrix {
@@ -16,7 +15,7 @@ public class IdentityMatrix implements Matrix {
         Matrix mutableInstance = null;
         try {
             mutableInstance = new SquareMatrix(matrix);
-        } catch (BadMatrixException ex) {
+        } catch (BadArgsException ex) {
             System.out.println(ex);
         }
         return mutableInstance;
@@ -28,24 +27,24 @@ public class IdentityMatrix implements Matrix {
         lineAndColumnCount = n;
     }
 
-    private void badIndexChecker(int i, int j) throws OutOfBoundsMatrixException {
+    private void badIndexChecker(int i, int j) throws IndexOutOfBoundsException {
         if (i < 0 || j < 0)
-            throw new OutOfBoundsMatrixException("Negative indx.");
+            throw new IndexOutOfBoundsException("Negative indx.");
         if (lineAndColumnCount <= i)
-            throw new OutOfBoundsMatrixException(String.format("Matrix line count(%d) less then %d.", lineAndColumnCount, i));
+            throw new IndexOutOfBoundsException(String.format("Matrix line count(%d) less then %d.", lineAndColumnCount, i));
         if (lineAndColumnCount <= j)
-            throw new OutOfBoundsMatrixException(String.format("Matrix line %d length(%d) less then %d.", i, lineAndColumnCount, j));
+            throw new IndexOutOfBoundsException(String.format("Matrix line %d length(%d) less then %d.", i, lineAndColumnCount, j));
     }
 
     @Override
-    public double get(int i, int j) throws OutOfBoundsMatrixException {
+    public double get(int i, int j) throws IndexOutOfBoundsException {
         badIndexChecker(i, j);
         return i == j ? 1 : 0;
     }
 
     @Override
-    public double set(int i, int j, double value) throws ImmutableMatrixException {
-        throw new ImmutableMatrixException("Identity matrix is immutable. Use .getMutableInstance(int n)");
+    public double set(int i, int j, double value) throws ImmutableException {
+        throw new ImmutableException("Identity matrix is immutable. Use .getMutableInstance(int n)");
     }
 
     @Override
@@ -59,12 +58,12 @@ public class IdentityMatrix implements Matrix {
     }
 
     @Override
-    public Vector getLineVector(int i) throws OutOfBoundsMatrixException {
+    public Vector getLineVector(int i) {
         return getMutableInstance(lineAndColumnCount).getLineVector(i);
     }
 
     @Override
-    public Vector getColumnVector(int j) throws OutOfBoundsMatrixException {
+    public Vector getColumnVector(int j) {
         return getMutableInstance(lineAndColumnCount).getColumnVector(j);
     }
 

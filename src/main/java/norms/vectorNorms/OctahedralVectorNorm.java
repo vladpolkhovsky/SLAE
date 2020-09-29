@@ -1,7 +1,6 @@
 package norms.vectorNorms;
 
 import vector.Vector;
-import vector.exception.OutOfBoundsVectorException;
 
 public class OctahedralVectorNorm implements VectorNorm {
     @Override
@@ -11,7 +10,7 @@ public class OctahedralVectorNorm implements VectorNorm {
             for (int i = 0; i < vector.getElementCount(); i++) {
                 sum += Math.abs(vector.get(i));
             }
-        } catch (OutOfBoundsVectorException outOfBoundsVectorException) {
+        } catch (IndexOutOfBoundsException outOfBoundsVectorException) {
 
         }
         return sum;

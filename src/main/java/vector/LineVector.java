@@ -1,10 +1,8 @@
 package vector;
 
+import exception.BadArgsException;
 import matrix.Matrix;
 import matrix.SquareMatrix;
-import matrix.exception.BadMatrixException;
-import vector.exception.BadVectorException;
-import vector.exception.OutOfBoundsVectorException;
 
 public class LineVector implements Vector {
     private final double[] vector;
@@ -15,7 +13,7 @@ public class LineVector implements Vector {
             for (int i = 0; i < this.vector.length; i++) {
                 this.vector[i] = vector.get(i);
             }
-        } catch (OutOfBoundsVectorException ex) {
+        } catch (IndexOutOfBoundsException ex) {
 
         }
     }
@@ -31,9 +29,9 @@ public class LineVector implements Vector {
         vector = new double[n];
     }
 
-    public LineVector(int n, double[] vector) throws BadVectorException {
+    public LineVector(int n, double[] vector) throws BadArgsException {
         if (vector.length < n) {
-            throw new BadVectorException(String.format("vector size(%d) less then %d", vector.length, n));
+            throw new BadArgsException(String.format("vector size(%d) less then %d", vector.length, n));
         }
         this.vector = new double[vector.length];
         for (int i = 0; i < vector.length; i++) {
@@ -41,20 +39,20 @@ public class LineVector implements Vector {
         }
     }
 
-    private void indxChecker(int i) throws OutOfBoundsVectorException {
+    private void indxChecker(int i) throws IndexOutOfBoundsException {
         if (i < 0 || vector.length <= i) {
-            throw new OutOfBoundsVectorException(String.format("vector size(%d) less then %d", vector.length, i));
+            throw new IndexOutOfBoundsException(String.format("vector size(%d) less then %d", vector.length, i));
         }
     }
 
     @Override
-    public double get(int i) throws OutOfBoundsVectorException {
+    public double get(int i) throws IndexOutOfBoundsException {
         indxChecker(i);
         return vector[i];
     }
 
     @Override
-    public double set(int i, double value) throws OutOfBoundsVectorException {
+    public double set(int i, double value) throws IndexOutOfBoundsException {
         indxChecker(i);
         double prevValue = vector[i];
         vector[i] = value;
@@ -73,7 +71,7 @@ public class LineVector implements Vector {
         Matrix rMatrix = null;
         try {
             rMatrix = new SquareMatrix(matrix);
-        } catch (BadMatrixException badMatrixException) {
+        } catch (BadArgsException badMatrixException) {
 
         }
         return rMatrix;

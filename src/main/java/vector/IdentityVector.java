@@ -1,11 +1,9 @@
 package vector;
 
+import exception.BadArgsException;
+import exception.ImmutableException;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
-import matrix.exception.BadMatrixException;
-import matrix.exception.OutOfBoundsMatrixException;
-import vector.exception.ImmutableVectorException;
-import vector.exception.OutOfBoundsVectorException;
 
 public class IdentityVector implements Vector {
     public static Vector getMutableInstance(int n) {
@@ -18,9 +16,9 @@ public class IdentityVector implements Vector {
 
     private int elementCount;
 
-    private void indxChecker(int i) throws OutOfBoundsVectorException {
+    private void indxChecker(int i) throws IndexOutOfBoundsException {
         if (i < 0 || elementCount <= i) {
-            throw new OutOfBoundsVectorException(String.format("vector size(%d) less then %d", elementCount, i));
+            throw new IndexOutOfBoundsException(String.format("vector size(%d) less then %d", elementCount, i));
         }
     }
 
@@ -29,14 +27,14 @@ public class IdentityVector implements Vector {
     }
 
     @Override
-    public double get(int i) throws OutOfBoundsVectorException {
+    public double get(int i) throws IndexOutOfBoundsException {
         indxChecker(i);
         return 1;
     }
 
     @Override
-    public double set(int i, double value) throws ImmutableVectorException {
-        throw new ImmutableVectorException("Identity vector is immutable. Use .getMutableInstance(int n)\"");
+    public double set(int i, double value) throws ImmutableException {
+        throw new ImmutableException("Identity vector is immutable. Use .getMutableInstance(int n)\"");
     }
 
     @Override
@@ -53,7 +51,7 @@ public class IdentityVector implements Vector {
         Matrix matrix = null;
         try {
             matrix = new RectangularMatrix(vector);
-        } catch (BadMatrixException ex) {
+        } catch (BadArgsException ex) {
 
         }
         return matrix;
@@ -64,7 +62,7 @@ public class IdentityVector implements Vector {
         Vector vector = null;
         try {
             vector = new LineVector(getMatrixForm().getLineVector(0));
-        } catch (OutOfBoundsMatrixException ex) {
+        } catch (IndexOutOfBoundsException ex) {
 
         }
         return vector;
@@ -75,7 +73,7 @@ public class IdentityVector implements Vector {
         Vector vector = null;
         try {
             vector = new ColumnVector(getMatrixForm().getLineVector(0));
-        } catch (OutOfBoundsMatrixException ex) {
+        } catch (IndexOutOfBoundsException ex) {
 
         }
         return vector;

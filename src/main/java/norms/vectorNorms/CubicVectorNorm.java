@@ -1,7 +1,6 @@
 package norms.vectorNorms;
 
 import vector.Vector;
-import vector.exception.OutOfBoundsVectorException;
 
 public class CubicVectorNorm implements VectorNorm {
     @Override
@@ -11,7 +10,7 @@ public class CubicVectorNorm implements VectorNorm {
             for (int i = 0; i < vector.getElementCount(); i++) {
                 max = Math.max(max, Math.abs(vector.get(i)));
             }
-        } catch (OutOfBoundsVectorException outOfBoundsVectorException) {
+        } catch (IndexOutOfBoundsException outOfBoundsVectorException) {
 
         }
         return max;

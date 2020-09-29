@@ -1,12 +1,11 @@
 package vector;
 
+import exception.ImmutableException;
 import matrix.Matrix;
-import vector.exception.ImmutableVectorException;
-import vector.exception.OutOfBoundsVectorException;
 
 public interface Vector extends ColumnVectorInterface, LineVectorInterface {
-    double get(int i) throws OutOfBoundsVectorException;
-    double set(int i, double value) throws OutOfBoundsVectorException, ImmutableVectorException;
+    double get(int i) throws IndexOutOfBoundsException;
+    double set(int i, double value) throws IndexOutOfBoundsException, ImmutableException;
     int getElementCount();
     Matrix getMatrixForm();
 }

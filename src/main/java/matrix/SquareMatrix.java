@@ -1,9 +1,9 @@
 package matrix;
 
-import matrix.exception.BadMatrixException;
+import exception.BadArgsException;
 
 public class SquareMatrix extends RectangularMatrix {
-    public SquareMatrix(double[][] matrix) throws BadMatrixException {
+    public SquareMatrix(double[][] matrix) throws BadArgsException {
         super(matrix);
     }
 
@@ -11,7 +11,7 @@ public class SquareMatrix extends RectangularMatrix {
         super(n, n);
     }
 
-    public SquareMatrix(int n, double[][] matrix) throws BadMatrixException {
+    public SquareMatrix(int n, double[][] matrix) throws BadArgsException {
         super(n, n, matrix);
     }
 }
