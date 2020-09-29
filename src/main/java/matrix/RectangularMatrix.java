@@ -1,6 +1,7 @@
 package matrix;
 
 import exception.BadArgsException;
+import exception.ImmutableException;
 import vector.ColumnVector;
 import vector.LineVector;
 import vector.Vector;
@@ -45,6 +46,19 @@ public class RectangularMatrix implements Matrix {
         }
     }
 
+    public RectangularMatrix(Matrix matrix) {
+        this.matrix = new double[matrix.getLineCount()][matrix.getColumnCount()];
+        try {
+            for (int i = 0; i < matrix.getLineCount(); i++) {
+                for (int j = 0; j < matrix.getColumnCount(); j++) {
+                    this.matrix[i][j] = matrix.get(i, j);
+                }
+            }
+        } catch (IndexOutOfBoundsException ex) {
+
+        }
+    }
+
     private void badIndexChecker(int i, int j) throws IndexOutOfBoundsException {
         if (i < 0 || j < 0)
             throw new IndexOutOfBoundsException("Negative indx.");
@@ -61,7 +75,7 @@ public class RectangularMatrix implements Matrix {
     }
 
     @Override
-    public double set(int i, int j, double value) throws IndexOutOfBoundsException {
+    public double set(int i, int j, double value) throws IndexOutOfBoundsException, ImmutableException {
         badIndexChecker(i, j);
         double pValue = matrix[i][j];
         matrix[i][j] = value;
@@ -100,7 +114,7 @@ public class RectangularMatrix implements Matrix {
         try {
             for (int i = 0; i < getLineCount(); i++) {
                 for (int j = 0; j < getColumnCount(); j++) {
-                    output += String.format("%15.10s", String.format("%.8f", get(i, j)));
+                    output += String.format("%15.12s", String.format("%.8f", get(i, j)));
                 }
                 output += "\n";
             }

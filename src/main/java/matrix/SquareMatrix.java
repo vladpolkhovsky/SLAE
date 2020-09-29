@@ -1,9 +1,14 @@
 package matrix;
 
 import exception.BadArgsException;
+import exception.ImmutableException;
 
 public class SquareMatrix extends RectangularMatrix {
     public SquareMatrix(double[][] matrix) throws BadArgsException {
+        super(matrix);
+    }
+
+    public SquareMatrix(Matrix matrix) {
         super(matrix);
     }
 
@@ -11,7 +16,7 @@ public class SquareMatrix extends RectangularMatrix {
         super(n, n);
     }
 
-    public SquareMatrix(int n, double[][] matrix) throws BadArgsException {
+    public SquareMatrix(int n, double[][] matrix) throws BadArgsException, ImmutableException {
         super(n, n, matrix);
     }
 }
