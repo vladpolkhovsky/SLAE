@@ -1,6 +1,7 @@
 package algo.slae;
 
 import algo.Multiplicator;
+import algo.exception.DegenerateMatrixException;
 import algo.exception.DifferentMatrixSizes;
 import exception.ImmutableException;
 import matrix.Matrix;
@@ -10,7 +11,7 @@ import vector.ColumnVector;
 import vector.Vector;
 
 public class SLAE {
-    private final static double eps = 1e-4;
+    private final static double eps = 1e-7;
 
     private Matrix A = null;
     private Matrix b = null;
@@ -18,31 +19,41 @@ public class SLAE {
 
     private boolean processed = false;
 
-    public SLAE(Matrix A, ColumnVector b) {
+    public SLAE(Matrix A, Vector b) throws DifferentMatrixSizes {
+        b = b.toColumnVector();
+        if (A.getColumnCount() != b.getElementCount()) {
+            throw new DifferentMatrixSizes(String.format("A column count(%d) != b element count(%d)", A.getColumnCount(), b.getElementCount()));
+        }
         this.A = new SquareMatrix(A);
         this.b = new RectangularMatrix(b.getMatrixForm());
     }
 
-    private void swapLines(int i, int j) throws DifferentMatrixSizes {
-        Matrix permMatrix = new PermutationMatrix(A.getColumnCount(), i, j);
-        A = Multiplicator.multiply(permMatrix, A);
-        b = Multiplicator.multiply(permMatrix, b);
+    private void swapLines(int i, int j) {
+        try {
+            Matrix permMatrix = new PermutationMatrix(A.getColumnCount(), i, j);
+            A = Multiplicator.multiply(permMatrix, A);
+            b = Multiplicator.multiply(permMatrix, b);
+        } catch (DifferentMatrixSizes ex) {
+
+        }
     }
 
-    private void swapColumn(int i, int j) throws DifferentMatrixSizes {
-        Matrix permMatrix = new PermutationMatrix(A.getColumnCount(), i, j);
-        A = Multiplicator.multiply(A, permMatrix);
-        b = Multiplicator.multiply(permMatrix, b);
+    private void swapColumn(int i, int j) {
+        try {
+            Matrix permMatrix = new PermutationMatrix(A.getColumnCount(), i, j);
+            A = Multiplicator.multiply(A, permMatrix);
+            b = Multiplicator.multiply(permMatrix, b);
+        } catch (DifferentMatrixSizes ex) {
+
+        }
     }
 
-    void solve() throws ImmutableException, IndexOutOfBoundsException, DifferentMatrixSizes {
+    private void solve() throws DegenerateMatrixException {
         straightCourse();
     }
 
-    private void straightCourse() throws ImmutableException {
+    private void straightCourse() throws DegenerateMatrixException {
         int n = A.getColumnCount();
-
-        System.out.println(A);
 
         for (int i = 0; i < n; i++) {
             int maxElemIndx = i;
@@ -51,16 +62,9 @@ public class SLAE {
                     maxElemIndx = j;
             }
             if (i != maxElemIndx) {
-                try {
-                    A = Multiplicator.multiply(new PermutationMatrix(n, i, maxElemIndx), A);
-                    b = Multiplicator.multiply(new PermutationMatrix(n, i, maxElemIndx), b);
-                } catch (DifferentMatrixSizes ex) {
-
-                }
+                swapLines(maxElemIndx, i);
             }
         }
-
-        System.out.println(A);
 
         double[][] Matrix_Clone = new double[n][n + 1];
 
@@ -76,21 +80,26 @@ public class SLAE {
         //Прямой ход (Зануление нижнего левого угла)
         for (int k = 0; k < n; k++) //k-номер строки
         {
+            if (Math.abs(Matrix_Clone[k][k]) < eps) {
+                throw new DegenerateMatrixException();
+            }
             for (int i = 0; i < n + 1; i++) //i-номер столбца
                 Matrix_Clone[k][i] = Matrix_Clone[k][i] / A.get(k, k); //Деление k-строки на первый член !=0 для преобразования его в единицу
-            if (Matrix_Clone[k][k] < eps) {
-                Matrix_Clone[k][k] = 0;
-            }
+
             for (int i = k + 1; i < n; i++) //i-номер следующей строки после k
             {
                 double K = Matrix_Clone[i][k] / Matrix_Clone[k][k]; //Коэффициент
                 for (int j = 0; j < n + 1; j++) //j-номер столбца следующей строки после k
                     Matrix_Clone[i][j] = Matrix_Clone[i][j] - Matrix_Clone[k][j] * K; //Зануление элементов матрицы ниже первого члена, преобразованного в единицу
             }
-            for (int i = 0; i < n; i++) { //Обновление, внесение изменений в начальную матрицу
-                for (int j = 0; j < n; j++)
-                    A.set(i, j, Matrix_Clone[i][j]);
-                b.set(i, 0, Matrix_Clone[i][n]);
+            try {
+                for (int i = 0; i < n; i++) { //Обновление, внесение изменений в начальную матрицу
+                    for (int j = 0; j < n; j++)
+                        A.set(i, j, Matrix_Clone[i][j]);
+                    b.set(i, 0, Matrix_Clone[i][n]);
+                }
+            } catch (ImmutableException ex) {
+
             }
         }
 
@@ -107,24 +116,19 @@ public class SLAE {
             }
         }
 
-        System.out.println(A);
-        System.out.println(b);
+        try {
+            x = new ColumnVector(n).getMatrixForm();
+            for (int i = 0; i < n; i++)
+                x.set(i, 0, Matrix_Clone[i][n]);
+        } catch (ImmutableException ex) {
 
-        x = new ColumnVector(n).getMatrixForm();
-        for (int i = 0; i < n; i++)
-            x.set(i, 0, Matrix_Clone[i][n]);
-
-        System.out.println(x);
+        }
 
         processed = true;
     }
 
-    public boolean canSolve() throws IndexOutOfBoundsException,DifferentMatrixSizes,ImmutableException {
+    public Vector getRootVector() throws DegenerateMatrixException {
         solve();
-        return false;
-    }
-
-    public Vector getRootVector() {
         return x.getColumnVector(0);
     }
 }
