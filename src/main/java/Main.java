@@ -135,7 +135,7 @@ public class Main {
 
             System.out.printf("Сумма погрешности = %e\n", sum);
 
-            System.out.printf("V(A) = ||A|| * ||A^(-1)|| == %lf", ConditionMatrix.getCondition(a, new CubicMatrixNorm()));
+            System.out.printf("V(A) = ||A|| * ||A^(-1)|| == %f", ConditionMatrix.getCondition(a, new CubicMatrixNorm()));
 
         } catch (Exception ex) {
             System.out.println(ex);
