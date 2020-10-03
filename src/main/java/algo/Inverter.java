@@ -1,5 +1,6 @@
-package algo.slae;
+package algo;
 
+import algo.slae.SLAE;
 import exception.BadArgsException;
 import exception.ImmutableException;
 import matrix.IdentityMatrix;
