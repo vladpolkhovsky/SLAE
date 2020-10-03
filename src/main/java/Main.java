@@ -1,4 +1,4 @@
-import algo.ConditionMatrix;
+import algo.slae.ConditionMatrix;
 import algo.Multiplicator;
 import algo.Inverter;
 import algo.exception.DegenerateMatrixException;

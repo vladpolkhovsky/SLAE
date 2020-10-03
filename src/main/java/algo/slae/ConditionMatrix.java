@@ -1,6 +1,6 @@
-package algo;
+package algo.slae;
 
-import algo.exception.DifferentMatrixSizes;
+import algo.Inverter;
 import exception.BadArgsException;
 import matrix.Matrix;
 import norms.matrixNorms.CubicMatrixNorm;
