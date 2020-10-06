@@ -9,8 +9,11 @@ import norms.matrixNorms.CubicMatrixNorm;
 import vector.ColumnVector;
 import vector.Vector;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+
 public class Main {
     public static void main(String[] args) throws Exception {
+        /*
         test1();
         test2();
         try {
@@ -20,8 +23,11 @@ public class Main {
         }
         test4();
         test5();
+         */
 
-        task();
+        //task();
+
+        test6();
     }
     public static void test1() throws Exception {
         Matrix a = new RectangularMatrix(new double[][]{
@@ -101,11 +107,11 @@ public class Main {
         try {
 
             Matrix a = new RectangularMatrix(new double[][]{
-                    {0.0944, 1.0799, 0.0000, -0.0726, 0.0726},
-                    {0.6897, -0.0908, 0.0182, 0.0363, 0.1271},
-                    {0.0545, 0.0000, 0.8676, -0.2541, 0.1452},
-                    {-0.1089, 0.2287, 0.0000, 0.8531, -0.0363},
-                    {0.4538, 0.00000, 0.1634, 0.0182, 1.0164}
+                    { 0.0944, 1.0799, 0.0000, -0.0726, 0.0726   },
+                    { 0.6897, -0.0908, 0.0182, 0.0363, 0.1271   },
+                    { 0.0545, 0.0000, 0.8676, -0.2541, 0.1452   },
+                    { -0.1089, 0.2287, 0.0000, 0.8531, -0.0363  },
+                    { 0.4538, 0.00000, 0.1634, 0.0182, 1.0164   }
             });
 
             ColumnVector b = new ColumnVector(new double[]{
@@ -139,6 +145,24 @@ public class Main {
 
         } catch (Exception ex) {
             System.out.println(ex);
+        }
+    }
+
+    public static void test6() throws Exception {
+        Matrix a = new RectangularMatrix(new double[][]{
+                { 3, 7 },
+                { 7, 2 }
+        });
+        ColumnVector b = new ColumnVector(new double[] {
+                12,
+                20
+        });
+        SLAE slae = new SLAE(a, b);
+        try {
+            System.out.println(slae.getRootVector().toLineVector());
+            System.out.println(Multiplicator.multiply(a, slae.getRootVector().getMatrixForm()));
+        } catch (DegenerateMatrixException ex) {
+            System.out.println("Degenerate matrix");
         }
     }
 }
