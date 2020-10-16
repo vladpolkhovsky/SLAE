@@ -1,5 +1,6 @@
-package algo;
+package algo.slae;
 
+import algo.Inverter;
 import algo.exception.DifferentMatrixSizes;
 import exception.BadArgsException;
 import matrix.Matrix;
