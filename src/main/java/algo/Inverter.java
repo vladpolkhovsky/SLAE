@@ -21,7 +21,6 @@ public class Inverter {
             throw new BadArgsException("A less then 1x1");
         }
     }
-
     public static Matrix getInvertMatrix(Matrix A) throws BadArgsException {
         checker(A);
         try {
