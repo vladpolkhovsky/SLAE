@@ -4,10 +4,12 @@ import algo.Inverter;
 import algo.Substractor;
 import algo.exception.DegenerateMatrixException;
 import algo.slae.SLAE;
+import matrix.IdentityMatrix;
 import matrix.Matrix;
 import matrix.RectangularMatrix;
 import matrix.SquareMatrix;
 import norms.matrixNorms.CubicMatrixNorm;
+import norms.vectorNorms.CubicVectorNorm;
 import vector.ColumnVector;
 import vector.Vector;
 
@@ -81,6 +83,53 @@ public class Main {
         System.out.println(slae.getRootVector().toLineVector());
     }
 
+public static void task() {
+    try {
+        Matrix A = new RectangularMatrix(new double[][]{
+                { 0.0944, 1.0799, 0.0000, -0.0726, 0.0726   },
+                { 0.6897, -0.0908, 0.0182, 0.0363, 0.1271   },
+                { 0.0545, 0.0000, 0.8676, -0.2541, 0.1452   },
+                { -0.1089, 0.2287, 0.0000, 0.8531, -0.0363  },
+                { 0.4538, 0.00000, 0.1634, 0.0182, 1.0164   }
+        });
+        ColumnVector b = new ColumnVector(new double[]{
+                4.6174,
+                4.2108,
+                -5.8770,
+                2.7842,
+                0.2178
+        });
+        int n = A.getColumnCount();
+        System.out.println("Для вычисления норм используется кубическая норма матрицы и вектора см. п. \"Нормы\" в отчёте.\n");
+        System.out.println("Уравнение вида A * x = b");
+        System.out.println("\nМатрица A:");
+        System.out.println(A);
+        System.out.println("\nВектор b:");
+        System.out.println(b);
+        SLAE slaeAxB = new SLAE(A, b);
+        Vector rootVector = slaeAxB.getRootVector().toColumnVector();
+        double detA = slaeAxB.getDet();
+        System.out.println("\nОпределитель A = " + detA);
+        System.out.println("\nВектор x:");
+        System.out.println(rootVector);
+        Matrix b_ = Multiplicator.multiply(A, rootVector.getMatrixForm());
+        Vector r = Substractor.substract(b_, b.getMatrixForm()).getColumnVector(0);
+        System.out.println("\nВектор невязки r : ");
+        System.out.println(r);
+        System.out.printf("\nНорма вектор невязки ||r|| = %E\n", new CubicVectorNorm().calculate(r));
+        Matrix inv = Inverter.getInvertMatrix(A);
+        Matrix G = Multiplicator.multiply(A, inv);
+        System.out.println("\nОбратная матрица A^-1 :\n" + inv);
+        Matrix identityMatrix = IdentityMatrix.getMutableInstance(n);
+        double RMatrixNorm = new CubicMatrixNorm().calculate(Substractor.substract(G, identityMatrix));
+        System.out.println("\nНорма ||R|| = ||A*A^-1 - E|| = " + RMatrixNorm);
+        double VCondition = ConditionMatrix.getCondition(A, new CubicMatrixNorm());
+        System.out.printf("\nЧисло обусловленности V(A) = ||A|| * ||A^(-1)|| == %E\n", VCondition);
+    } catch (Exception ex) {
+        System.out.println(ex);
+    }
+}
+
     public static void test3() throws Exception {
         Matrix a = new RectangularMatrix(new double[][]{
                 { 1, 0 },
@@ -122,48 +171,6 @@ public class Main {
             System.out.println(ex);
         }
     }
-
-public static void task() {
-    try {
-        Matrix A = new RectangularMatrix(new double[][]{
-                { 0.0944, 1.0799, 0.0000, -0.0726, 0.0726   },
-                { 0.6897, -0.0908, 0.0182, 0.0363, 0.1271   },
-                { 0.0545, 0.0000, 0.8676, -0.2541, 0.1452   },
-                { -0.1089, 0.2287, 0.0000, 0.8531, -0.0363  },
-                { 0.4538, 0.00000, 0.1634, 0.0182, 1.0164   }
-        });
-        ColumnVector b = new ColumnVector(new double[]{
-                4.6174,
-                4.2108,
-                -5.8770,
-                2.7842,
-                0.2178
-        });
-        System.out.println("Уравнение вида A * x = b");
-        System.out.println("Матрица A:");
-        System.out.println(A);
-        System.out.println("Вектор b:");
-        System.out.println(b);
-        SLAE slaeAxB = new SLAE(A, b);
-        Vector rootVector = slaeAxB.getRootVector().toColumnVector();
-        double detA = slaeAxB.getDet();
-        System.out.println("Определитель A = " + detA);
-        System.out.println("\nВектор x:");
-        System.out.println(rootVector);
-        double sum = 0.0;
-        Vector r = Substractor.substract(Multiplicator.multiply(A, rootVector.getMatrixForm()), b.getMatrixForm()).getColumnVector(0);
-        for (int i = 0; i < r.getElementCount(); i++) {
-            sum += r.get(i);
-        }
-        System.out.println("\nВектор невязки r:");
-        System.out.println(r);
-        System.out.printf("Сумма элементов вектора невязки = %e\n", sum);
-        System.out.printf("V(A) = ||A|| * ||A^(-1)|| == %f\n", ConditionMatrix.getCondition(A, new CubicMatrixNorm()));
-        System.out.println("Обратная матрица:\n" + Multiplicator.multiply(A, Inverter.getInvertMatrix(A)));
-    } catch (Exception ex) {
-        System.out.println(ex);
-    }
-}
 
     public static void test6() throws Exception {
         Matrix a = new RectangularMatrix(new double[][]{
@@ -209,14 +216,7 @@ public static void task() {
             System.out.println(x.toLineVector());
             System.out.println(root.toLineVector());
 
-            double sum = 0.0;
-            for (int i = 0; i < n; i++) {
-                sum += Math.abs(x.get(i) - root.get(i));
-            }
-
-            System.out.println("delta = " + sum);
             System.out.println("Condition = " + ConditionMatrix.getCondition(A, new CubicMatrixNorm()));
-
         } catch (Exception ex) {
             System.out.print(ex);
         }

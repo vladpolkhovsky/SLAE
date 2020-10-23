@@ -114,7 +114,7 @@ public class RectangularMatrix implements Matrix {
         try {
             for (int i = 0; i < getLineCount(); i++) {
                 for (int j = 0; j < getColumnCount(); j++) {
-                    output += String.format("%15.12s", String.format("%.8f", get(i, j)));
+                    output += String.format("%10.8s", String.format("%.4f", get(i, j)));
                 }
                 output += "\n";
             }
